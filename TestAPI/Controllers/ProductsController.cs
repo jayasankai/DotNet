@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TestAPI.Data;
 using TestAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace MyApp.Controllers
 {
@@ -23,13 +24,13 @@ namespace MyApp.Controllers
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetAllProducts() {
-            var products = _context.Products.ToArray();
+            var products = await _context.Products.ToArrayAsync();
             return Ok(products);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult> GetProduct(int id) {
-            var product = _context.Products.Find(id);
+            var product = await _context.Products.FindAsync(id);
 
             if (product == null) {
                 return NotFound();
