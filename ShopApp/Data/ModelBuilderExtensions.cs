@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using TestAPI.Models;
+using ShopAppAPI.Models;
 
-namespace TestAPI.Data
+namespace ShopAppAPI.Data
 {
     public static class ModelBuilderExtensions
     {

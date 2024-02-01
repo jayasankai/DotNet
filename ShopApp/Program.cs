@@ -1,4 +1,4 @@
-using TestAPI.Data;
+using ShopAppAPI.Data;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

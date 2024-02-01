@@ -1,7 +1,7 @@
-using TestAPI.Models;
+using ShopAppAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace TestAPI.Data;
+namespace ShopAppAPI.Data;
 public class ShopContext : DbContext {
 
     public ShopContext(DbContextOptions options) : base(options) {}
