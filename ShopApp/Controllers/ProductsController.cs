@@ -23,9 +23,36 @@ namespace ShopAppAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetAllProducts() {
-            var products = await _context.Products.ToArrayAsync();
-            return Ok(products);
+        public async Task<ActionResult<IEnumerable<Product>>> GetAllProducts([FromQuery]ProductQueryParameters queryParameters) {
+            IQueryable<Product> products = _context.Products;
+
+            if (queryParameters.MinPrice != null) {
+                 products = products.Where(product => product.Price >= queryParameters.MinPrice.Value);
+            }
+
+            if (queryParameters.MaxPrice != null) {
+                 products = products.Where(product => product.Price <= queryParameters.MaxPrice.Value);
+            }
+
+            if (!String.IsNullOrEmpty(queryParameters.Sku)) {
+                products = products.Where(product => product.Sku == queryParameters.Sku);
+            }
+
+            if (!String.IsNullOrEmpty(queryParameters.Name)) {
+                products = products.Where(p => p.Name.ToLower().Contains(queryParameters.Name.ToLower()));
+            }
+
+            if (!String.IsNullOrEmpty(queryParameters.SortBy)) {
+                if (typeof(Product).GetProperty(queryParameters.SortBy) != null) {
+                    products = products.OrderByCustom(queryParameters.SortBy, queryParameters.SortOrder);
+                }
+            }
+
+            products = products
+                .Skip(queryParameters.Size * (queryParameters.Page - 1))
+                .Take(queryParameters.Size);
+
+            return Ok(await products.ToArrayAsync());
         }
 
         [HttpGet("{id}")]
