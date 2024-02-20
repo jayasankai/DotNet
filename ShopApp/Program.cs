@@ -16,6 +16,11 @@ builder.Services.AddDbContext<ShopContext>(options => options.UseInMemoryDatabas
 
 var app = builder.Build();
 app.UseHttpsRedirection();
+
+if (!app.Environment.IsDevelopment()) {
+    app.UseHsts();
+}
+
 app.MapControllers();
 
 app.Run();
